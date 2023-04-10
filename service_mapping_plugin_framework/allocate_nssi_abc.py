@@ -503,6 +503,7 @@ class AllocateNSSIabc(metaclass=abc.ABCMeta):
         print("Slice MOI:", self.moi_config)
 
     def allocate_nssi(self):  # TODO: if use existing nssi
+        # Similar to 28.531 allocateNssi operation
         self.get_nsst()
         if self.parameter['use_existed']:
             print('Modify procedure...')
