@@ -311,9 +311,9 @@ class AllocateNSSIabc(metaclass=abc.ABCMeta):
                 vnf_pkg_path = os.path.join(root, vnf)
 
                 # Call os_ma_nfvo (TBD)
-                # self.create_vnf_package(self.moi_config)
+                self.create_vnf_package(self.moi_config)
                 # self.create_vnf_package_subscriptions(vnf)
-                # self.upload_vnf_package(vnf_pkg_path)
+                self.upload_vnf_package(vnf_pkg_path)
                 # TODO gitlab feature/deallocateNSSI API in 250 row
                 # self.listen_on_vnf_package_subscriptions()
             break
@@ -326,10 +326,10 @@ class AllocateNSSIabc(metaclass=abc.ABCMeta):
             
             # TBD
             # self.create_ns_descriptor()
-            # self.create_ns_descriptor_subscriptions(ns_des)
-            # self.upload_ns_descriptor(ns_descriptor_path)
+            self.create_ns_descriptor_subscriptions(ns_des)
+            self.upload_ns_descriptor(ns_descriptor_path)
             # self.listen_on_ns_descriptor_subscriptions()
-            # self.create_ns_instance()
+            self.create_ns_instance()
             # self.create_ns_instance_subscriptions()
             # self.ns_instantiation(ns_descriptor_path)
             # self.listen_on_ns_instance_subscriptions()
