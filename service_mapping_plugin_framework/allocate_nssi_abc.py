@@ -310,10 +310,10 @@ class AllocateNSSIabc(metaclass=abc.ABCMeta):
             for vnf in directory:
                 vnf_pkg_path = os.path.join(root, vnf)
 
-                # Call os_ma_nfvo
-                self.create_vnf_package(self.moi_config)
+                # Call os_ma_nfvo (TBD)
+                # self.create_vnf_package(self.moi_config)
                 # self.create_vnf_package_subscriptions(vnf)
-                self.upload_vnf_package(vnf_pkg_path)
+                # self.upload_vnf_package(vnf_pkg_path)
                 # TODO gitlab feature/deallocateNSSI API in 250 row
                 # self.listen_on_vnf_package_subscriptions()
             break
@@ -323,14 +323,15 @@ class AllocateNSSIabc(metaclass=abc.ABCMeta):
                 os.path.join(settings.DATA_PATH, 'NSD', self.parameter['ns_template'])):
             ns_des = self.parameter['ns_template']
             ns_descriptor_path = root
-
-            self.create_ns_descriptor()
+            
+            # TBD
+            # self.create_ns_descriptor()
             # self.create_ns_descriptor_subscriptions(ns_des)
-            self.upload_ns_descriptor(ns_descriptor_path)
+            # self.upload_ns_descriptor(ns_descriptor_path)
             # self.listen_on_ns_descriptor_subscriptions()
-            self.create_ns_instance()
+            # self.create_ns_instance()
             # self.create_ns_instance_subscriptions()
-            self.ns_instantiation(ns_descriptor_path)
+            # self.ns_instantiation(ns_descriptor_path)
             # self.listen_on_ns_instance_subscriptions()
             break
 
@@ -448,8 +449,18 @@ class AllocateNSSIabc(metaclass=abc.ABCMeta):
                 "attributeListIn": self.nsinfo
             }
             create_nsinfo_moi = requests.put(url, data=json.dumps(data), headers=self.headers)
-            print('Create NsInfo moi status: {}'.format(create_nsinfo_moi.status_code))
+            if create_nsinfo_moi.status_code in (200, 201):
+                self.nsinfo['id'] = create_nsinfo_moi.json()['attributeListOut']['id']
+            else:
+                response = {
+                     "attributeListOut": {
+                          'moi': 'Create NsInfo Failed'
+                     },
+                     "status": "OperationFailed"
+                 }
+                 raise Exception(response)                
 
+            # print('Create NsInfo moi status: {}'.format(create_nsinfo_moi.status_code))
             # Modify Slice MOI
             url = self.NM_URL + "NetworkSliceSubnet/{}/".format(self.nssiId)
             scope = ["BASE_NTH_LEVEL", 0]
